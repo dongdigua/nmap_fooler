@@ -14,7 +14,7 @@ loop_acceptor(Socket) ->
 	{ok, Client} = gen_tcp:accept(Socket),
 	io:fwrite("~w", [Client]),
 	Recv = gen_tcp:recv(Client, 0),
-	io:fwrite("~w~n", [Recv]),
+	io:fwrite("~w~w~n", [Recv, calendar:local_time()]),
 	case Recv of
 		{ok, <<"HELP\r\n">>} -> gen_tcp:send(Client, "FLAG:{YouMuffinHead}+10points");
 		_ -> nil
