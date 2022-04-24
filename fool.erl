@@ -4,6 +4,7 @@
 
 main(Args) ->
 	{Int, _} = string:to_integer(Args),
+	io:fwrite("starting...~n"),
 	start(Int).
 
 start(Port) ->
@@ -16,8 +17,10 @@ loop_acceptor(Socket) ->
 	Recv = gen_tcp:recv(Client, 0),
 	io:fwrite("~w~w~n", [Recv, calendar:local_time()]),
 	case Recv of
-		{ok, <<"HELP\r\n">>} -> gen_tcp:send(Client, "FLAG:{YouMuffinHead}+10points");
-		_ -> nil
+		{ok, <<"HELP\r\n">>} ->
+			gen_tcp:send(Client, "FLAG:{YouMuffinHead}+10points"),
+			gen_tcp:close(Client);
+		_ -> gen_tcp:close(Client)
 	end,
 	loop_acceptor(Socket).
 
