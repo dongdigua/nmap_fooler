@@ -1,8 +1,6 @@
 defmodule Server do
   require Logger
-
   def accept(port) do
-    # The options below mean:
     # 1. `:binary` - receives data as binaries (instead of lists)
     # 2. `packet: :line` - receives data line by line
     # 3. `active: false` - blocks on `:gen_tcp.recv/2` until data is available
@@ -12,7 +10,6 @@ defmodule Server do
     Logger.info("Accepting connections on port #{port}")
     loop_acceptor(socket)
   end
-
 
   defp loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
@@ -33,7 +30,6 @@ end
 
 defmodule Server.Application do
   use Supervisor
-
   def start_link do
     Supervisor.start_link(__MODULE__, [])
   end
@@ -41,14 +37,10 @@ defmodule Server.Application do
   def init([]) do
     port = String.to_integer(System.get_env("PORT") || "3306")
     children = [
-      %{
-        id: Server,
-        start: {Server, :accept, [port]}
-      }
+      %{id: Server, start: {Server, :accept, [port]}}
     ]
     Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
-#Server.accept(3306)
 Server.Application.start_link()
 :timer.sleep(:infinity)

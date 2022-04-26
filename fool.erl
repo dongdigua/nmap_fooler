@@ -8,7 +8,8 @@ main(Args) ->
 	start(Int).
 
 start(Port) ->
-	{ok, Socket} = gen_tcp:listen(Port, [binary, {packet, 0}, {active, false}, {reuseaddr, true}]),
+	{ok, Socket} =
+		gen_tcp:listen(Port, [binary, {packet, 0}, {active, false}, {reuseaddr, true}]),
 	loop_acceptor(Socket).
 
 loop_acceptor(Socket) ->
