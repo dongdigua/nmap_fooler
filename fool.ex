@@ -9,7 +9,7 @@ defmodule Server do
 
   defp loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
-    Logger.debug("accept: " <> inspect(client))
+    Logger.debug("accept: " <> inspect(client) <> inspect(:inet.peername(client)))
     Task.start_link(fn -> serve(client) end)
     loop_acceptor(socket)
   end
