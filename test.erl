@@ -5,6 +5,10 @@ nano_get_url() ->
 	nano_get_url("www.baidu.com").   %in elixir use ''
 
 nano_get_url(Host) ->
+  % 1. `binary` - receives data as binaries (instead of lists)
+  % 2. `{packet, line}` - receives data line by line
+  % 3. `active: false` - blocks on `gen_tcp:recv/2` until data is available
+  % 4. `reuseaddr: true` - allows us to reuse the address if the listener crashes
 	{ok, Socket} = gen_tcp:connect(Host, 80, [binary, {packet, 0}]),
 	ok = gen_tcp:send(Socket, "GET / HTTP/1.0\r\n\r\n"),
 	receive_data(Socket, []).
