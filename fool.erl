@@ -30,7 +30,7 @@ serve(Client) ->
 
 	case Recv of
 		{ok, <<"HELP\r\n">>} ->
-			gen_tcp:send(Client, "FLAG:{YouMuffinHead}+10points"),
+			gen_tcp:send(Client, "FLAG:{YouMuffinHead}+10points\r\n"),
 			gen_tcp:close(Client);
 		_ -> gen_tcp:close(Client)
 	end.

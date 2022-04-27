@@ -17,7 +17,7 @@ defmodule Server do
   defp serve(client) do
     case :gen_tcp.recv(client, 0) |> IO.inspect(limit: :infinity) do
       {:ok, "HELP\r\n"} ->
-        :gen_tcp.send(client, "FLAG:{YouMuffinHead}+10points")
+        :gen_tcp.send(client, "FLAG:{YouMuffinHead}+10points\r\n")
         :gen_tcp.close(client)
       _ -> :gen_tcp.close(client)
     end
