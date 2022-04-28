@@ -26,7 +26,7 @@ loop_acceptor(Socket) ->
 serve(Client) ->
 	Recv = gen_tcp:recv(Client, 0),
 	io:fwrite("~s~w~w~s", [?CONSOLE_COLOR_YELLOW, Client, inet:peername(Client), ?CONSOLE_COLOR_NORMAL]),
-	io:fwrite("~w~s~w~s~n", [Recv, ?CONSOLE_COLOR_GREEN, calendar:local_time(), ?CONSOLE_COLOR_NORMAL]),
+	io:fwrite("~p~s~w~s~n", [Recv, ?CONSOLE_COLOR_GREEN, calendar:local_time(), ?CONSOLE_COLOR_NORMAL]),
 
 	case Recv of
 		{ok, <<"HELP\r\n">>} ->
