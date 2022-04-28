@@ -1,6 +1,6 @@
 # This File Records Some Strange Logs
 
-## Strange MGLNDD
+## MGLNDD
 ```erlang
 {{2022,4,28},{6,36,50}}
 <<77,71,76,78,68,68,95,49,50,...>> 
@@ -10,3 +10,9 @@ all in this pattern:
 ```shell
 MGLNDD_<TARGET_IP>_<TARGET_PORT>
 ```
+
+## <<5,1,0>>
+``erlang
+{{2022,4,28},{16,4,44}}
+``
+four times
