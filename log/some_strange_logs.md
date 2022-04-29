@@ -10,6 +10,7 @@ all in this pattern:
 ```shell
 MGLNDD_<TARGET_IP>_<TARGET_PORT>
 ```
+and, ALL from 192.241.2xx.xx
 
 ## <<5,1,0>>
 ```erlang
