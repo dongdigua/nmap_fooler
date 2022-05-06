@@ -10,7 +10,8 @@ all in this pattern:
 ```shell
 MGLNDD_<TARGET_IP>_<TARGET_PORT>
 ```
-and, ALL from 192.241.2xx.xx
+and, ALL from 192.241.2xx.xx  
+more than five times  
 
 ## <<5,1,0>>
 ```erlang
