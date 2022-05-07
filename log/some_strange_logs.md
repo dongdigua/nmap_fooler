@@ -12,6 +12,9 @@ MGLNDD_<TARGET_IP>_<TARGET_PORT>
 ```
 and, ALL from 192.241.2xx.xx  
 more than five times  
+### links
+https://www.ironcastle.net/mglndd-scans-sun-mar-20th/  
+https://oubonarumamay.hatenablog.com/entry/2022/03/05/210000  
 
 ## <<5,1,0>>
 ```erlang
