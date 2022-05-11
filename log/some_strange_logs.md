@@ -21,4 +21,9 @@ https://oubonarumamay.hatenablog.com/entry/2022/03/05/210000
 {{2022,4,28},{16,4,44}}
 <<5,1,0>>
 ```
-more than five times
+more than five times  
+
+## aha! miner
+```erlang
+<<"{\"id\":1000,\"method\":\"mining.subscribe\",\"params\":[\"cpuminer/2.5.0\"]}\n">>
+```
