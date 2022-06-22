@@ -1,5 +1,5 @@
 #!/usr/bin/env escript
--module(fool).
+-module(listener).
 -mode(compile).
 
 -define(CONSOLE_COLOR_RED,      "\e[0;31m").
@@ -16,16 +16,34 @@ main(Args) ->
 start(Port) ->
 	{ok, Socket} =
 		gen_tcp:listen(Port, [binary, {packet, 0}, {active, false}, {reuseaddr, true}]),
-	loop_acceptor(Socket).
+	loop_acceptor(Socket, 10).
 
-loop_acceptor(Socket) ->
+loop_acceptor(Socket, Num) ->
+	io:fwrite("~s[POOL] ~w~s~n", [?CONSOLE_COLOR_YELLOW, Num, ?CONSOLE_COLOR_NORMAL]),
 	{ok, Client} = gen_tcp:accept(Socket),
-	spawn(fun() -> serve(Client) end),
-	loop_acceptor(Socket).
+	if
+		Num > 1 ->
+			process_flag(trap_exit, true),
+			spawn_link(fun() -> serve(Client) end),
+			receive
+				{'EXIT', _, _} ->
+					loop_acceptor(Socket, Num)
+			after 1 ->
+					loop_acceptor(Socket, Num - 1)
+			end;
+
+		true ->
+			receive
+				_ ->
+					loop_acceptor(Socket, Num + 1)
+			after 0 ->
+					loop_acceptor(Socket, Num)
+			end
+	end.
 
 serve(Client) ->
 	Recv = gen_tcp:recv(Client, 0),
-	io:fwrite("~s~w~w~s", [?CONSOLE_COLOR_YELLOW, Client, inet:peername(Client), ?CONSOLE_COLOR_NORMAL]),
+	io:fwrite("~s~w~s", [?CONSOLE_COLOR_BLUE,  inet:peername(Client), ?CONSOLE_COLOR_NORMAL]),
 	io:fwrite("~p~s~w~s~n", [Recv, ?CONSOLE_COLOR_GREEN, calendar:local_time(), ?CONSOLE_COLOR_NORMAL]),
 
 	case Recv of

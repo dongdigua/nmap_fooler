@@ -3,15 +3,34 @@ defmodule Server do
   def accept(port) do
     {:ok, socket} =
       :gen_tcp.listen(port, [:binary, packet: 0, active: false, reuseaddr: true])
-    Logger.info("Accepting connections on port #{port}")
-    loop_acceptor(socket)
+    IO.puts(IO.ANSI.red <> "Accepting connections on port #{port}" <> IO.ANSI.reset)
+    loop_acceptor(socket, 10)
   end
 
-  defp loop_acceptor(socket) do
+  defp loop_acceptor(socket, num) do
+    IO.puts(IO.ANSI.yellow <> "[POOL] " <> inspect(num) <> IO.ANSI.reset)
     {:ok, client} = :gen_tcp.accept(socket)
-    Logger.debug("accept: " <> inspect(client) <> inspect(:inet.peername(client)))
-    Task.start_link(fn -> serve(client) end)
-    loop_acceptor(socket)
+
+    if num > 1 do
+      spawn_link(fn -> serve(client) end)
+      receive do
+        {:EXIT, _, _} = msg ->
+          IO.puts(IO.ANSI.green <> "[RECEIVE] " <> inspect(msg) <> IO.ANSI.reset)
+          loop_acceptor(socket, num)
+      after
+        1 ->
+          loop_acceptor(socket, num - 1)
+      end
+    else
+      receive do
+        {:EXIT, _, _} = msg ->
+          IO.puts(IO.ANSI.red <> "[RECEIVE] " <> inspect(msg) <> IO.ANSI.reset)
+          loop_acceptor(socket, num + 1)
+      after
+        0 ->
+          loop_acceptor(socket, num)
+      end
+    end
   end
 
   defp serve(client) do
