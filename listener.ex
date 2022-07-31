@@ -14,6 +14,7 @@ defmodule Server do
     if num > 1 do
       spawn_link(fn -> serve(client) end)
       receive do
+        # :EXIT indicates the subprocess exited
         {:EXIT, _, _} = msg ->
           IO.puts(IO.ANSI.green <> "[RECEIVE] " <> inspect(msg) <> IO.ANSI.reset)
           loop_acceptor(socket, num)
